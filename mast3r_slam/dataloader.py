@@ -99,8 +99,7 @@ class KITTIDataset(MonocularDataset):
 
         self.timestamps = (np.loadtxt(
             Path(self.dataset_path, "times.txt"), delimiter=" ", dtype=np.float64
-        ) * 1_000_000).astype(np.int64)
-        breakpoint()
+        ) * 1_000_000_000).astype(np.int64)
 
         self.rgb_files = glob.glob(os.path.join(self.dataset_path, "image_2", "*.png"))
         self.rgb_files = natsorted(self.rgb_files)
@@ -114,6 +113,19 @@ class KITTIDataset(MonocularDataset):
         
         self.camera_intrinsics = Intrinsics.from_calib(self.img_size, 1242, 375, [self.cam2_K_np[0, 0], self.cam2_K_np[1,1], self.cam2_K_np[0,2], self.cam2_K_np[1,2]])
 
+
+class TartanAirV2Dataset(MonocularDataset):
+    def __init__(self, dataset_path):
+        print("============================TartanAirV2Dataset, dataset_path:", dataset_path)
+        super().__init__()
+        self.dataset_path = pathlib.Path(dataset_path)
+        self.rgb_files = glob.glob(os.path.join(self.dataset_path, "image_lcam_front", "*.png"))
+        print("============================rgb_files:", self.rgb_files)
+
+        self.timestamps = np.arange(0, len(self.rgb_files)).astype(self.dtype) * 0.1
+        self.timestamps = self.timestamps.astype(np.int64) * 1e9
+
+        self.camera_intrinsics = Intrinsics.from_calib(self.img_size, 640, 640, [320, 320, 320, 320])
 
 
 class EurocDataset(MonocularDataset):
