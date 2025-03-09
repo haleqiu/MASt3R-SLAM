@@ -1,10 +1,12 @@
+import os
 import pathlib
 import re
 import cv2
 from natsort import natsorted
 import numpy as np
 import torch
-import pyrealsense2 as rs
+from pathlib import Path
+import glob
 import yaml
 
 from mast3r_slam.mast3r_utils import resize_img
@@ -89,8 +91,34 @@ class TUMDataset(MonocularDataset):
         self.camera_intrinsics = Intrinsics.from_calib(self.img_size, W, H, calib)
 
 
+class KITTIDataset(MonocularDataset):
+    def __init__(self, dataset_path):
+        print("============================KITTIDataset, dataset_path:", dataset_path)
+        super().__init__()
+        self.dataset_path = pathlib.Path(dataset_path)
+
+        self.timestamps = (np.loadtxt(
+            Path(self.dataset_path, "times.txt"), delimiter=" ", dtype=np.float64
+        ) * 1_000_000).astype(np.int64)
+        breakpoint()
+
+        self.rgb_files = glob.glob(os.path.join(self.dataset_path, "image_2", "*.png"))
+        self.rgb_files = natsorted(self.rgb_files)
+
+        with open(Path(self.dataset_path, "calib.txt"), "r") as f:
+            lines = f.read().strip().splitlines()
+            P2    = np.array(list(map(float, lines[2][4:].split(" "))))
+            P2.resize((3, 4))
+            self.cam2_K_np, self.cam2_R, self.cam2_t, _, _, _, _ = cv2.decomposeProjectionMatrix(P2)
+        print("============================cam2_K_np:", self.cam2_K_np)
+        
+        self.camera_intrinsics = Intrinsics.from_calib(self.img_size, 1242, 375, [self.cam2_K_np[0, 0], self.cam2_K_np[1,1], self.cam2_K_np[0,2], self.cam2_K_np[1,2]])
+
+
+
 class EurocDataset(MonocularDataset):
     def __init__(self, dataset_path):
+        print("============================EurocDataset, dataset_path:", dataset_path)
         super().__init__()
         # For Euroc dataset, the distortion is too much to handle for MASt3R.
         # So we always undistort the images, but the calibration will not be used for any later optimization unless specified.
@@ -319,9 +347,11 @@ class Intrinsics:
 
 def load_dataset(dataset_path):
     split_dataset_type = dataset_path.split("/")
+    if "KITTI_odometry" in split_dataset_type:
+        return KITTIDataset(dataset_path)
     if "tum" in split_dataset_type:
         return TUMDataset(dataset_path)
-    if "euroc" in split_dataset_type:
+    if "euroc" or "EuRoC" in split_dataset_type:
         return EurocDataset(dataset_path)
     if "eth3d" in split_dataset_type:
         return ETH3DDataset(dataset_path)
