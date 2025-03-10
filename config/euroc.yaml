@@ -1,0 +1,7 @@
+width: 752
+height: 480
+# With distortion (fx, fy, cx, cy, k1, k2, p1, p2)
+calibration:  [458.654, 457.296, 367.215, 248.375, -0.28340811, 0.07395907, 0.00019359, 1.76187114e-05, 0.0]
+
+# Without distortion (fx, fy, cx, cy)
+# calibration:  [718.856, 718.856, 607.1928, 185.2157]
