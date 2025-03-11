@@ -1,12 +1,12 @@
-python main.py --config config/calib.yaml --dataset /data2/datasets/yuhengq/Euroc/MH_01_easy --calib config/euroc.yaml --no-viz --save-as /data1/datasets/MAC-SLAM/mast3r-result/EuRoC/MH01
-python main.py --config config/calib.yaml --dataset /data2/datasets/yuhengq/Euroc/MH_02_easy --calib config/euroc.yaml --no-viz --save-as /data1/datasets/MAC-SLAM/mast3r-result/EuRoC/MH02
-python main.py --config config/calib.yaml --dataset /data2/datasets/yuhengq/Euroc/MH_03_medium --calib config/euroc.yaml --no-viz --save-as /data1/datasets/MAC-SLAM/mast3r-result/EuRoC/MH03
-python main.py --config config/calib.yaml --dataset /data2/datasets/yuhengq/Euroc/MH_04_difficult --calib config/euroc.yaml --no-viz --save-as /data1/datasets/MAC-SLAM/mast3r-result/EuRoC/MH04
-python main.py --config config/calib.yaml --dataset /data2/datasets/yuhengq/Euroc/MH_05_difficult --calib config/euroc.yaml --no-viz --save-as /data1/datasets/MAC-SLAM/mast3r-result/EuRoC/MH05
-python main.py --config config/calib.yaml --dataset /data2/datasets/yuhengq/Euroc/V1_01_easy --calib config/euroc.yaml --no-viz --save-as /data1/datasets/MAC-SLAM/mast3r-result/EuRoC/V101
-python main.py --config config/calib.yaml --dataset /data2/datasets/yuhengq/Euroc/V1_02_medium --calib config/euroc.yaml --no-viz --save-as /data1/datasets/MAC-SLAM/mast3r-result/EuRoC/V102
-python main.py --config config/calib.yaml --dataset /data2/datasets/yuhengq/Euroc/V1_03_difficult --calib config/euroc.yaml --no-viz --save-as /data1/datasets/MAC-SLAM/mast3r-result/EuRoC/V103
-python main.py --config config/calib.yaml --dataset /data2/datasets/yuhengq/Euroc/V2_01_easy --calib config/euroc.yaml --no-viz --save-as /data1/datasets/MAC-SLAM/mast3r-result/EuRoC/V201
-python main.py --config config/calib.yaml --dataset /data2/datasets/yuhengq/Euroc/V2_02_medium --calib config/euroc.yaml --no-viz --save-as /data1/datasets/MAC-SLAM/mast3r-result/EuRoC/V202
-python main.py --config config/calib.yaml --dataset /data2/datasets/yuhengq/Euroc/V2_03_difficult --calib config/euroc.yaml --no-viz --save-as /data1/datasets/MAC-SLAM/mast3r-result/EuRoC/V203
+python main.py --config config/eval_calib.yaml --dataset /data2/datasets/yuhengq/Euroc/MH_01_easy --calib config/euroc.yaml --no-viz --save-as /data1/datasets/MAC-SLAM/mast3r-result/EuRoC/MH01
+python main.py --config config/eval_calib.yaml --dataset /data2/datasets/yuhengq/Euroc/MH_02_easy --calib config/euroc.yaml --no-viz --save-as /data1/datasets/MAC-SLAM/mast3r-result/EuRoC/MH02
+python main.py --config config/eval_calib.yaml --dataset /data2/datasets/yuhengq/Euroc/MH_03_medium --calib config/euroc.yaml --no-viz --save-as /data1/datasets/MAC-SLAM/mast3r-result/EuRoC/MH03
+python main.py --config config/eval_calib.yaml --dataset /data2/datasets/yuhengq/Euroc/MH_04_difficult --calib config/euroc.yaml --no-viz --save-as /data1/datasets/MAC-SLAM/mast3r-result/EuRoC/MH04
+python main.py --config config/eval_calib.yaml --dataset /data2/datasets/yuhengq/Euroc/MH_05_difficult --calib config/euroc.yaml --no-viz --save-as /data1/datasets/MAC-SLAM/mast3r-result/EuRoC/MH05
+python main.py --config config/eval_calib.yaml --dataset /data2/datasets/yuhengq/Euroc/V1_01_easy --calib config/euroc.yaml --no-viz --save-as /data1/datasets/MAC-SLAM/mast3r-result/EuRoC/V101
+python main.py --config config/eval_calib.yaml --dataset /data2/datasets/yuhengq/Euroc/V1_02_medium --calib config/euroc.yaml --no-viz --save-as /data1/datasets/MAC-SLAM/mast3r-result/EuRoC/V102
+python main.py --config config/eval_calib.yaml --dataset /data2/datasets/yuhengq/Euroc/V1_03_difficult --calib config/euroc.yaml --no-viz --save-as /data1/datasets/MAC-SLAM/mast3r-result/EuRoC/V103
+python main.py --config config/eval_calib.yaml --dataset /data2/datasets/yuhengq/Euroc/V2_01_easy --calib config/euroc.yaml --no-viz --save-as /data1/datasets/MAC-SLAM/mast3r-result/EuRoC/V201
+python main.py --config config/eval_calib.yaml --dataset /data2/datasets/yuhengq/Euroc/V2_02_medium --calib config/euroc.yaml --no-viz --save-as /data1/datasets/MAC-SLAM/mast3r-result/EuRoC/V202
+python main.py --config config/eval_calib.yaml --dataset /data2/datasets/yuhengq/Euroc/V2_03_difficult --calib config/euroc.yaml --no-viz --save-as /data1/datasets/MAC-SLAM/mast3r-result/EuRoC/V203
 

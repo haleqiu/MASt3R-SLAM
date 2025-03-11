@@ -7,6 +7,7 @@ import numpy as np
 import torch
 from pathlib import Path
 import glob
+# import pyrealsense2 as rs
 import yaml
 
 from mast3r_slam.mast3r_utils import resize_img
@@ -188,59 +189,59 @@ class SevenScenesDataset(MonocularDataset):
         )
 
 
-class RealsenseDataset(MonocularDataset):
-    def __init__(self):
-        super().__init__()
-        self.dataset_path = None
-        self.pipeline = rs.pipeline()
-        # self.h, self.w = 720, 1280
-        self.h, self.w = 480, 640
-        self.rs_config = rs.config()
-        self.rs_config.enable_stream(
-            rs.stream.color, self.w, self.h, rs.format.bgr8, 30
-        )
-        self.profile = self.pipeline.start(self.rs_config)
+# class RealsenseDataset(MonocularDataset):
+#     def __init__(self):
+#         super().__init__()
+#         self.dataset_path = None
+#         self.pipeline = rs.pipeline()
+#         # self.h, self.w = 720, 1280
+#         self.h, self.w = 480, 640
+#         self.rs_config = rs.config()
+#         self.rs_config.enable_stream(
+#             rs.stream.color, self.w, self.h, rs.format.bgr8, 30
+#         )
+#         self.profile = self.pipeline.start(self.rs_config)
 
-        self.rgb_sensor = self.profile.get_device().query_sensors()[1]
-        # self.rgb_sensor.set_option(rs.option.enable_auto_exposure, False)
-        # self.rgb_sensor.set_option(rs.option.enable_auto_white_balance, False)
-        # self.rgb_sensor.set_option(rs.option.exposure, 200)
-        self.rgb_profile = rs.video_stream_profile(
-            self.profile.get_stream(rs.stream.color)
-        )
-        self.save_results = False
+#         self.rgb_sensor = self.profile.get_device().query_sensors()[1]
+#         # self.rgb_sensor.set_option(rs.option.enable_auto_exposure, False)
+#         # self.rgb_sensor.set_option(rs.option.enable_auto_white_balance, False)
+#         # self.rgb_sensor.set_option(rs.option.exposure, 200)
+#         self.rgb_profile = rs.video_stream_profile(
+#             self.profile.get_stream(rs.stream.color)
+#         )
+#         self.save_results = False
 
-        if self.use_calibration:
-            rgb_intrinsics = self.rgb_profile.get_intrinsics()
-            self.camera_intrinsics = Intrinsics.from_calib(
-                self.img_size,
-                self.w,
-                self.h,
-                [
-                    rgb_intrinsics.fx,
-                    rgb_intrinsics.fy,
-                    rgb_intrinsics.ppx,
-                    rgb_intrinsics.ppy,
-                ],
-            )
+#         if self.use_calibration:
+#             rgb_intrinsics = self.rgb_profile.get_intrinsics()
+#             self.camera_intrinsics = Intrinsics.from_calib(
+#                 self.img_size,
+#                 self.w,
+#                 self.h,
+#                 [
+#                     rgb_intrinsics.fx,
+#                     rgb_intrinsics.fy,
+#                     rgb_intrinsics.ppx,
+#                     rgb_intrinsics.ppy,
+#                 ],
+#             )
 
-    def __len__(self):
-        return 999999
+#     def __len__(self):
+#         return 999999
 
-    def get_timestamp(self, idx):
-        return self.timestamps[idx]
+#     def get_timestamp(self, idx):
+#         return self.timestamps[idx]
 
-    def read_img(self, idx):
-        frameset = self.pipeline.wait_for_frames()
-        timestamp = frameset.get_timestamp()
-        timestamp /= 1000
-        self.timestamps.append(timestamp)
+#     def read_img(self, idx):
+#         frameset = self.pipeline.wait_for_frames()
+#         timestamp = frameset.get_timestamp()
+#         timestamp /= 1000
+#         self.timestamps.append(timestamp)
 
-        rgb_frame = frameset.get_color_frame()
-        img = np.asanyarray(rgb_frame.get_data())
-        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-        img = img.astype(self.dtype)
-        return img
+#         rgb_frame = frameset.get_color_frame()
+#         img = np.asanyarray(rgb_frame.get_data())
+#         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+#         img = img.astype(self.dtype)
+#         return img
 
 
 class Webcam(MonocularDataset):
@@ -359,18 +360,21 @@ class Intrinsics:
 
 def load_dataset(dataset_path):
     split_dataset_type = dataset_path.split("/")
+    print("============================split_dataset_type:", split_dataset_type)
     if "KITTI_odometry" in split_dataset_type:
         return KITTIDataset(dataset_path)
+    if any(x in split_dataset_type for x in ["TartanAirV2", "tartanairv2_test"]):
+        return TartanAirV2Dataset(dataset_path)
     if "tum" in split_dataset_type:
         return TUMDataset(dataset_path)
-    if "euroc" or "EuRoC" in split_dataset_type:
+    if any(x in split_dataset_type for x in ["euroc", "EuRoC", "Euroc"]):
         return EurocDataset(dataset_path)
     if "eth3d" in split_dataset_type:
         return ETH3DDataset(dataset_path)
     if "7-scenes" in split_dataset_type:
         return SevenScenesDataset(dataset_path)
-    if "realsense" in split_dataset_type:
-        return RealsenseDataset()
+    # if "realsense" in split_dataset_type:
+    #     return RealsenseDataset()
     if "webcam" in split_dataset_type:
         return Webcam()
 
